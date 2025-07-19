@@ -1,107 +1,131 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Head from 'next/head'
-import { Inter } from 'next/font/google'
+import { useState } from "react";
+import { Inter } from "next/font/google";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
-  const [prompt, setPrompt] = useState('')
-  const [result, setResult] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [prompt, setPrompt] = useState('');
+  const [result, setResult] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+
   const generate = async () => {
-    if (!prompt.trim()) return
-    setLoading(true)
-    setResult('')
+    if (!prompt.trim()) return;
+    setLoading(true);
     try {
-      const res = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
-      })
-      const data = await res.json()
-      setResult(data.text || 'No response')
+      });
+      const data = await res.json();
+      setResult(data.text);
     } catch (err) {
-      console.error(err)
-      setResult('Something went wrong.')
+      console.error(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
+
+  const handleCopy = () => {
+    if (result) {
+      navigator.clipboard.writeText(result);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      generate();
+    }
+  };
 
   return (
-    <>
-      <Head>
-        <title>QuickDescrip — AI Product Description & Tag Generator</title>
-        <meta name="description" content="Generate product descriptions and Etsy tags quickly with AI. Boost your sales and save time with QuickDescrip." />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-    <div className={inter.className}></div>
-      <main className="min-h-screen bg-gradient-to-r from-blue-500 via-teal-400 to-green-300 flex flex-col items-center px-4 py-8 text-center text-white">
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-2">🪄 QuickDescrip</h1>
-      <p className="text-sm mb-4">AI-powered product description & tag generator</p>
+    <main className={`${inter.className} flex flex-col items-center justify-center min-h-screen px-4 py-12 bg-gradient-to-r from-blue-500 to-green-300 text-center`}>
+       <header className="sticky top-0 bg-gradient-to-r from-blue-500 to-green-300 w-full max-w-5xl flex justify-between items-center py-4 mb-4 border-b border-white/20 z-10">
+        <h1 className="text-white text-2xl font-bold">🪄 QuickDescrip</h1>
+        <nav className="space-x-4">
+          <a href="#" className="text-white hover:underline">Pricing</a>
+          <a href="#" className="text-white hover:underline">About</a>
+          <a href="#" className="text-white hover:underline">Contact</a>
+        </nav>
+      </header>
+      <p className="text-white text-xl mb-8">AI-powered product description & tag generator</p>
 
-        <div className="w-full max-w-xl mb-8">
-          <input
-            type="text"
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Enter your product name or idea..."
-            className="p-3 rounded w-full text-black border border-gray-300 mb-4"
-          />
-          <button
-            onClick={generate}
-            disabled={loading}
-            className="bg-white text-blue-600 font-semibold py-3 px-6 rounded hover:bg-gray-100 transition w-full"
-          >
-            {loading ? 'Generating...' : 'Generate Description & Tags'}
-          </button>
-        </div>
+      <div className="bg-white bg-opacity-90 p-6 rounded-xl shadow-lg w-full max-w-xl">
+        <input
+          type="text"
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Enter your product name or idea..."
+          className="w-full px-4 py-3 mb-4 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        <button
+          onClick={generate}
+          disabled={loading}
+          className="w-full mb-4 py-3 rounded-full text-white font-semibold transition
+          bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 disabled:opacity-50"
+        >
+          {loading ? "Generating..." : "Generate Description & Tags"}
+        </button>
 
-        {result && (
-          <div className="bg-white text-black p-4 rounded max-w-xl w-full text-left whitespace-pre-line break-words mb-8">
-            {result}
-          </div>
-        )}
+        <textarea
+          className={`w-full max-w-xl px-4 py-3 rounded-md border border-gray-300 bg-white text-black whitespace-pre-wrap break-words mb-4 transition-opacity duration-500 ${result ? 'opacity-100' : 'opacity-50'}`}
+          rows={10}
+          readOnly
+          value={result}
+          placeholder="AI-generated description & tags will appear here..."
+        />
 
-        {/* How it works */}
-        <section className="bg-white text-black rounded p-6 max-w-3xl w-full mb-8 shadow">
-  <h2 className="text-2xl font-bold mb-4">How it works</h2>
-  <div className="flex flex-col md:flex-row justify-around text-left space-y-4 md:space-y-0 md:space-x-4">
-    <div>📝 <strong>Enter product idea:</strong> like “handmade mug”.</div>
-    <div>⚡ <strong>Click generate:</strong> get AI-written description & tags.</div>
-    <div>📈 <strong>Copy & sell:</strong> paste into Etsy, Shopify, Amazon & boost sales.</div>
-  </div>
-</section>
+        <button
+          onClick={handleCopy}
+          disabled={!result}
+          className="mt-2 bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition disabled:opacity-50"
+        >
+          {copied ? "✅ Copied!" : "Copy"}
+        </button>
+      </div>
 
-<section className="bg-white text-black rounded p-6 max-w-3xl w-full mb-8 shadow">
-  <h2 className="text-2xl font-bold mb-4">Why QuickDescrip?</h2>
-  <ul className="space-y-2 text-left">
-    <li>✅ Save hours writing product descriptions</li>
-    <li>✅ SEO-optimized tags increase visibility</li>
-    <li>✅ Simple, instant, and beginner-friendly</li>
-    <li>✅ Works for Etsy, Shopify, Amazon, eBay & more</li>
-  </ul>
-</section>
+      {/* How it works */}
+      <section className="bg-white bg-opacity-90 mt-8 p-6 rounded-xl shadow-md max-w-2xl w-full text-left">
+        <h2 className="text-xl font-bold mb-4">How it works</h2>
+        <ul className="space-y-2 text-gray-700">
+          <li>📝 <strong>Enter product idea:</strong> like “handmade mug”.</li>
+          <li>⚡ <strong>Click generate:</strong> get AI-written description & tags.</li>
+          <li>📈 <strong>Copy & sell:</strong> paste into Etsy, Shopify, Amazon & boost sales.</li>
+        </ul>
+      </section>
 
+      {/* Why QuickDescrip */}
+      <section className="bg-white bg-opacity-90 mt-8 p-6 rounded-xl shadow-md max-w-2xl w-full text-left">
+        <h2 className="text-xl font-bold mb-4">Why QuickDescrip?</h2>
+        <ul className="space-y-2 text-gray-700">
+          <li>✅ Save hours writing product descriptions</li>
+          <li>✅ SEO-optimized tags increase visibility</li>
+          <li>✅ Simple, instant, and beginner-friendly</li>
+          <li>✅ Works for Etsy, Shopify, Amazon, eBay & more</li>
+        </ul>
+      </section>
 
-        {/* Call to action */}
-        <div className="bg-white text-black rounded p-6 max-w-3xl w-full mb-8 shadow">
-          <h2 className="text-xl font-semibold mb-2">Ready to save time and sell more?</h2>
-          <button
-            onClick={generate}
-            className="bg-white text-blue-600 font-semibold py-3 px-6 rounded hover:bg-gray-100 transition"
-          >
-            Start Generating Now
-          </button>
-        </div>
+      {/* CTA */}
+      <div className="bg-white bg-opacity-90 mt-8 p-6 rounded-xl shadow-md max-w-2xl w-full">
+        <p className="text-lg font-medium mb-2">Ready to save time and sell more?</p>
+        <a
+          href="#"
+          className="text-blue-600 font-semibold hover:underline"
+        >
+          Start Generating Now
+        </a>
+      </div>
 
-        <footer className="text-sm mt-8 opacity-80">
-  © 2025 QuickDescrip — <a href="#" className="underline">Contact</a> | <a href="#" className="underline">Privacy</a>
-</footer>
-
-      </main>
-    </>
-  )
+      {/* Footer */}
+      <footer className="mt-12 text-sm text-white opacity-80">
+        © 2025 QuickDescrip — <a href="#" className="underline">Contact</a> | <a href="#" className="underline">Privacy</a>
+      </footer>
+    </main>
+  );
 }
