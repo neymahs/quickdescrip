@@ -1,8 +1,3 @@
-export const metadata = {
-  title: 'Contact — QuickDescrip',
-  description: 'Get in touch with QuickDescrip for support, questions, or partnership opportunities.'
-};
-
 export default function Contact() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4 py-12 bg-gradient-to-r from-blue-500 to-green-300">

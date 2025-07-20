@@ -17,7 +17,7 @@ export default function About() {
           Shopify, Amazon, eBay and more.
         </p>
         <p className="text-gray-700">
-          Whether you're just starting or running a large store, QuickDescrip helps turn your ideas into polished listings
+          Whether you are just starting or running a large store, QuickDescrip helps turn your ideas into polished listings
           that sell — instantly and easily.
         </p>
       </div>
