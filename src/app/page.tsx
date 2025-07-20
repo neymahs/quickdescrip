@@ -47,16 +47,9 @@ export default function Home() {
 
   return (
     <main className={`${inter.className} flex flex-col items-center justify-center min-h-screen px-4 py-12 bg-gradient-to-r from-blue-500 to-green-300 text-center`}>
-       <header className="sticky top-0 bg-gradient-to-r from-blue-500 to-green-300 w-full max-w-5xl flex justify-between items-center py-4 mb-4 border-b border-white/20 z-10">
-      <h1 className="text-white text-2xl font-bold">🪄 QuickDescrip</h1>
-     <nav className="space-x-4">
-    <Link href="/pricing" className="text-white hover:underline">Pricing</Link>
-    <Link href="/about" className="text-white hover:underline">About</Link>
-    <Link href="/contact" className="text-white hover:underline">Contact</Link>
-    </nav>
-    </header>
+       
 
-      <p className="text-white text-xl mb-8">AI-powered product description & tag generator</p>
+    <p className="text-white text-xl mb-8">AI-powered product description & tag generator</p>
 
       <div className="bg-white bg-opacity-90 p-6 rounded-xl shadow-lg w-full max-w-xl">
         <input

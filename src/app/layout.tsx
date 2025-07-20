@@ -51,7 +51,7 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* 🪄 Navigation */}
-        <nav className="flex justify-center space-x-6 py-4 bg-gradient-to-r from-blue-500 to-green-400 text-white font-semibold">
+        <nav className="sticky top-0 z-50 flex justify-center space-x-6 py-4 bg-gradient-to-r from-blue-500 to-green-400 text-white font-semibold">
           <Link href="/" className="hover:underline">🪄 QuickDescrip</Link>
           <Link href="/pricing" className="hover:underline">Pricing</Link>
           <Link href="/about" className="hover:underline">About</Link>
