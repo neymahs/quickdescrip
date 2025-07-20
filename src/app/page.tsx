@@ -121,8 +121,12 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="mt-12 text-sm text-white opacity-80">
-        © 2025 QuickDescrip — <a href="#" className="underline">Contact</a> | <a href="#" className="underline">Privacy</a>
-      </footer>
+  © 2025 QuickDescrip — 
+  <Link href="/pricing" className="underline ml-1">Pricing</Link> | 
+  <Link href="/about" className="underline ml-1">About</Link> | 
+  <Link href="/contact" className="underline ml-1">Contact</Link> | 
+  <Link href="/privacy" className="underline ml-1">Privacy</Link>
+</footer>
     </main>
   );
 }
