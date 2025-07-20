@@ -70,11 +70,12 @@ export default function Home() {
         </button>
 
         <textarea
-          className={`w-full max-w-xl px-4 py-3 rounded-md border border-gray-300 bg-white text-black whitespace-pre-wrap break-words mb-4 transition-opacity duration-500 ${result ? 'opacity-100' : 'opacity-50'}`}
-          rows={10}
+          
+          value={result ||''}
           readOnly
-          value={result}
           placeholder="AI-generated description & tags will appear here..."
+          className={`w-full max-w-xl px-4 py-3 rounded-md border border-gray-300 bg-white text-black whitespace-pre-wrap break-words mb-4 transition-all duration-500 resize-none ${result ? 'h-auto' : 'h12'}`}
+          rows={result ? 10 : 2}
         />
 
         <button
