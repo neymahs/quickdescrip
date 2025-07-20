@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from 'next/link';
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -58,6 +60,7 @@ export default function RootLayout({
           <Link href="/contact" className="hover:underline">Contact</Link>
         </nav>
         <main>{children}</main>
+        <Analytics />
       </body>
     </html>
   );
