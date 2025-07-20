@@ -4,7 +4,7 @@ export default function Contact() {
     <div className="bg-white rounded-xl shadow-md p-8 max-w-2xl w-full text-center">
       <h1 className="text-3xl font-bold mb-4">Contact Us</h1>
       <p className="mb-4">
-        We'd love to hear from you! For questions, suggestions, or support, please email us at:
+        We would love to hear from you! For questions, suggestions, or support, please email us at:
       </p>
       <p className="font-semibold">support@quickdescrip.com</p>
       <p className="mt-4">We usually respond within 24 hours.</p></div>
