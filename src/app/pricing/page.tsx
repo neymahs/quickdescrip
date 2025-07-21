@@ -2,8 +2,37 @@
 
 import { useState } from "react";
 
+// 🏷️ Replace with your actual Stripe price IDs:
+const PRO_MONTHLY_PRICE_ID = "price_1RnITfL0X1qWRI8F39qGoMQe";
+const PRO_YEARLY_PRICE_ID = "price_1RnIjzL0X1qWRI8F7CnYVnHV";
+const TEAM_MONTHLY_PRICE_ID = "price_1RnIVaL0X1qWRI8FvFt1xg5s";
+const TEAM_YEARLY_PRICE_ID = "price_1RnIm2L0X1qWRI8FsjSMzQ6P";
+
 export default function PricingPage() {
   const [yearly, setYearly] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  async function handleCheckout(priceId: string) {
+    try {
+      setLoading(true);
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priceId }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert("Something went wrong.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Checkout failed.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4 py-12 bg-gradient-to-r from-blue-500 to-green-300">
@@ -59,7 +88,13 @@ export default function PricingPage() {
               <li>✅ Custom templates</li>
             </ul>
             <hr className="my-4 border-gray-300" />
-            <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full">Upgrade to Pro</button>
+            <button
+              onClick={() => handleCheckout(yearly ? PRO_YEARLY_PRICE_ID : PRO_MONTHLY_PRICE_ID)}
+              disabled={loading}
+              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full"
+            >
+              {loading ? "Loading..." : "Upgrade to Pro"}
+            </button>
           </div>
 
           {/* Team Plan */}
@@ -75,7 +110,13 @@ export default function PricingPage() {
               <li>✅ Priority support</li>
             </ul>
             <hr className="my-4 border-gray-300" />
-            <button className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 w-full">Contact Sales</button>
+            <button
+              onClick={() => handleCheckout(yearly ? TEAM_YEARLY_PRICE_ID : TEAM_MONTHLY_PRICE_ID)}
+              disabled={loading}
+              className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 w-full"
+            >
+              {loading ? "Loading..." : "Contact Sales"}
+            </button>
           </div>
         </div>
       </div>
