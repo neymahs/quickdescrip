@@ -10,11 +10,11 @@ const TEAM_YEARLY_PRICE_ID = "price_1RnIm2L0X1qWRI8FsjSMzQ6P";
 
 export default function PricingPage() {
   const [yearly, setYearly] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
 
-  async function handleCheckout(priceId: string) {
+  async function handleCheckout(priceId: string, planName: string) {
     try {
-      setLoading(true);
+      setLoadingPlan(planName);
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -30,7 +30,7 @@ export default function PricingPage() {
       console.error(error);
       alert("Checkout failed.");
     } finally {
-      setLoading(false);
+      setLoadingPlan(null);
     }
   }
 
@@ -89,11 +89,11 @@ export default function PricingPage() {
             </ul>
             <hr className="my-4 border-gray-300" />
             <button
-              onClick={() => handleCheckout(yearly ? PRO_YEARLY_PRICE_ID : PRO_MONTHLY_PRICE_ID)}
-              disabled={loading}
+              onClick={() => handleCheckout(yearly ? PRO_YEARLY_PRICE_ID : PRO_MONTHLY_PRICE_ID, "pro")}
+              disabled={loadingPlan === "pro"}
               className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full"
             >
-              {loading ? "Loading..." : "Upgrade to Pro"}
+              {loadingPlan === "pro" ? "Loading..." : "Upgrade to Pro"}
             </button>
           </div>
 
@@ -111,11 +111,11 @@ export default function PricingPage() {
             </ul>
             <hr className="my-4 border-gray-300" />
             <button
-              onClick={() => handleCheckout(yearly ? TEAM_YEARLY_PRICE_ID : TEAM_MONTHLY_PRICE_ID)}
-              disabled={loading}
+              onClick={() => handleCheckout(yearly ? TEAM_YEARLY_PRICE_ID : TEAM_MONTHLY_PRICE_ID, "team")}
+              disabled={loadingPlan === "team"}
               className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 w-full"
             >
-              {loading ? "Loading..." : "Contact Sales"}
+              {loadingPlan === "team" ? "Loading..." : "Contact Sales"}
             </button>
           </div>
         </div>
