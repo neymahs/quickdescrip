@@ -12,7 +12,7 @@ export default function Home() {
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
-
+  
   const generate = async () => {
     if (!prompt.trim()) return;
     setLoading(true);
