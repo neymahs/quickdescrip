@@ -36,7 +36,7 @@ export default function NavBar() {
             {/* sign in button or circle */}
             <button
               onClick={() => signIn("google")}
-              className="ml-4 bg-white text-blue-500 px-3 py-1 rounded hover:bg-gray-200 font-semibold"
+              className="bg-white text-blue-500 px-3 py-1 rounded hover:bg-gray-200 text-sm"
             >
               Sign in
             </button>
