@@ -9,7 +9,7 @@ export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 flex flex-wrap items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-500 to-green-400 text-white font-semibold">
+    <nav className="sticky top-0 z-50 flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-500 to-green-400 text-white font-semibold">
       {/* Left: logo + nav links */}
       <div className="flex items-center space-x-4 overflow-x-auto max-w-full">
         <Link href="/" className="text-xl font-bold hover:underline whitespace-nowrap">🪄 QuickDescrip</Link>
@@ -18,7 +18,7 @@ export default function NavBar() {
         <Link href="/contact" className="hover:underline whitespace-nowrap">Contact</Link>
       </div>
 
-      {/* Right: sign in or user */}
+      {/* Right: sign in / user */}
       <div className="relative flex flex-col items-center">
         {!session ? (
           <>
@@ -47,13 +47,15 @@ export default function NavBar() {
                 {session.user?.name?.[0]?.toUpperCase() ?? session.user?.email?.[0]?.toUpperCase() ?? "U"}
               </span>
             </button>
-
             {menuOpen && (
-              <div className="dropdown animate-fade-slide mt-2">
-                <p className="text-xs truncate px-2" title={session.user?.email ?? ""}>{session.user?.email}</p>
-                <button 
-                  onClick={() => { setMenuOpen(false); signOut(); }}
-                  className="w-full text-left px-2 py-1 text-red-500 hover:underline text-sm"
+              <div className="mt-1 bg-white text-black rounded shadow w-36 animate-fade-slide flex flex-col items-center">
+                <p className="px-2 py-1 text-xs truncate">{session.user?.email}</p>
+                <button
+                  onClick={() => {
+                    setMenuOpen(false);
+                    signOut();
+                  }}
+                  className="text-red-500 px-2 py-1 text-sm hover:underline w-full text-left"
                 >
                   Sign out
                 </button>
