@@ -21,16 +21,19 @@ export default function NavBar() {
   }, []);
 
   return (
-    <nav className="sticky top-0 z-50 flex justify-center items-baseline space-x-6 py-4 bg-gradient-to-r from-blue-500 to-green-400 text-white font-semibold">
+    <nav className="sticky top-0 z-50 flex justify-center items-baseline space-x-6 py-4 px-4 bg-gradient-to-r from-blue-500 to-green-400 text-white font-semibold">
+        {/* centered links */}
       <Link href="/" className="text-xl font-bold hover:underline">🪄 QuickDescrip</Link>
       <Link href="/pricing" className="hover:underline">Pricing</Link>
       <Link href="/about" className="hover:underline">About</Link>
       <Link href="/contact" className="hover:underline">Contact</Link>
 
-      <div className="ml-auto relative" ref={dropdownRef}>
+      {/* right side */}
+
+      <div className="ml-auto flex item=center space-x-2">
         {!session ? (
           <>
-            {/* Visible sign in button */}
+            {/* sign in button or circle */}
             <button
               onClick={() => signIn("google")}
               className="ml-4 bg-white text-blue-500 px-3 py-1 rounded hover:bg-gray-200 font-semibold"
