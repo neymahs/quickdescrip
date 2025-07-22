@@ -71,3 +71,11 @@ body {
 .dropdown button:hover {
   text-decoration: underline;
 }
+
+@media (max-width: 400px) {
+  nav a,
+  nav button,
+  nav span {
+    font-size: 0.85rem;
+  }
+}
