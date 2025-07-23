@@ -1,17 +1,27 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  // apiVersion optional
+});
+
+// Use the correct secret based on environment
+const webhookSecret =
+  process.env.NODE_ENV === 'production'
+    ? process.env.STRIPE_WEBHOOK_SECRET_LIVE
+    : process.env.STRIPE_WEBHOOK_SECRET_LOCAL;
 
 export async function POST(req: Request) {
   const body = await req.text();
   const sig = req.headers.get('stripe-signature') as string;
 
+  console.log("Using webhook secret:", webhookSecret); // debug
+
   try {
     const event = stripe.webhooks.constructEvent(
       body,
       sig,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      webhookSecret!
     );
 
     if (event.type === 'checkout.session.completed') {
